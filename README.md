@@ -1,4 +1,4 @@
-## Pangenome-Graphs *homo sapiens* chr21
+# Pangenome-Graphs *homo sapiens* chr21
 
 ## Introduction
 
