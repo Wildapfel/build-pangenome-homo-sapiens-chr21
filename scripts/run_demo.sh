@@ -39,5 +39,9 @@ if [[ $CONTAINER_TOOL == "podman" ]] ; then
         localhost/pangenome-workflow:latest \
         micromamba run -n bioinfo-pangenome snakemake --cores $N_CORES
 elif [[ $CONTAINER_TOOL == "docker" ]]; then
-    echo docker execution not implemented yet.
+    docker run \
+        -v $(pwd):/mnt:z \
+        -w /mnt \
+        pangenome-workflow:latest \
+        micromamba run -n bioinfo-pangenome snakemake --cores $N_CORES
 fi
