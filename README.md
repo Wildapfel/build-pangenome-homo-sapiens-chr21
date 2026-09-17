@@ -1,15 +1,15 @@
 # Pangenome-Graphs *homo sapiens* chr21
 
 ## Introduction
-- U build an reproducible pangenome-build pipeline using Docker and Snakemake, including illustrations of interesting regions (male, female) found via Bandage in chromosome 21 of 10 chromosomes each
+- An reproducible pangenome-build pipeline using Docker and Snakemake, including illustrations of interesting regions (male, female) found via Bandage in chromosome 21 of 10 chromosomes each
 - Regions were inspected using `Badange`
-- I found highly structural variant regions but also highly conserved (long) regions
+- I found highly structural variant regions but also long conserved regions
 
 ## Data
 - B-Lymphocyte WGS (male and female)
 - The exact IDs can be found in `configs/data.yml`
 
-## Illustrations
+## Illustrations of Structural Variants in Chromosome 21
 | Potassium | Magnesium | 
 |:---:|:---:|
 | ![Potassium](results/bandage/female/bubbles_01.png) | ![Potassium](results/bandage/female/bubbles_01.png) |
@@ -24,10 +24,13 @@
 2. Build pangenome graphs onto each subset 
 
 ## Run Demo
-- Just copies the relevant files into `__demo__` and execute the pipeline there
-- run `Bandage`
+- Just copies the relevant files into `__demo__` and saves the pipeline output there (mirroring my execution)
+- Execute the `run_demo` binary:
+```
+./run_demo.sh
+```
+- Open `Bandage` and load a sample
 - `file > load graph (.grf) > select male/female .grf > draw graph > node labels:name`
-
 
 ## instructions
 
