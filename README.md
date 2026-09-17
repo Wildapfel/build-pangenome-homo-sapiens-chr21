@@ -1,21 +1,21 @@
 # Pangenome-Graphs *homo sapiens* chr21
 
 ## Introduction
-- An reproducible pangenome-build pipeline using Docker and Snakemake, including illustrations of interesting regions (male, female) found via Bandage in chromosome 21 of 10 chromosomes each
+- An project-centric reproducible pangenome-build pipeline using Docker and Snakemake, including illustrations of interesting regions (male, female) found via Bandage in chromosome 21 of 10 chromosomes each sex
 - I found highly structural variant regions but also long conserved regions
 - I will not interpret the Biology, its only for demonstrational purposes, but I want to remark, that some structural variants looking interesting, and highlights the need of pangenome references
 
 ###### *Quick Note*
-- Bandage outputs different topologies every time, hence the graphs can vary when being reproduced !
-- 900Mb of DNA alphabet !
-- Graph build is also computational expensive !
+- Bandage outputs have different topologies every time, hence the graphs can vary when being reproduced !
+- Graph build is computational expensive (taking increasingly longer with number of sequences), therefore I implemented the demo for a smaller subset (3 females, 3 males) then my initial run, hence the graphs look differently !
+- *Demo*: ca. 70mb compressed, ca. 300mb uncompressed letters !
 
 ## Data
 - *Homo sapiens* Chromosome 21 of B-Lymphocyte WGS (male and female)
 - The exact IDs can be found in `configs/data.yml`
 
 ## Illustrations of Structural Variants in Chromosome 21
-| Female Regions | Male regions | 
+| Female Regions | Male regions |
 |:---:|:---:|
 | ![](results/bandage/female/bubbles_01.png) | ![](results/bandage/male/bubble_01.png) |
 | ![](results/bandage/female/bubbles_02.png) | ![](results/bandage/male/bubble_02.png) |
@@ -44,4 +44,4 @@
 - I set a hard coded number for multithreading in the minigraph build ...
 - `minigraph` also exports bed-like files which can be applied in downstream analysis
 - `minigraph --call` outputs a reference to sample validation and takes sometime to compute,
-  thats why only included a demo for a single sample
+  thats why I only included a demo for a single sample

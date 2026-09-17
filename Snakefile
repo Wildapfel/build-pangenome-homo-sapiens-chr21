@@ -14,6 +14,11 @@ ACCESSIONS_FEMALE = config["accessions"]["female"]
 ALL_MALE_FASTA_AS_SINGLE_STRING = " ".join([f"data/male/{acc}.chr21.fna" for acc in ACCESSIONS_MALE])
 ALL_FEMALE_FASTA_AS_SINGLE_STRING = " ".join([f"data/female/{acc}.chr21.fna" for acc in ACCESSIONS_FEMALE])
 
+# some colors 
+RED='\033[0;31m'
+GREEN='\033[0;32m'        
+NC='\033[0m' # No Color
+
 rule all:
     input:
         expand("{data}/male/{accession_male}.chr{chromosome}.fna", accession_male=ACCESSIONS_MALE, chromosome=N_CHROMOSOME, data=DATA),
@@ -38,7 +43,8 @@ rule download_male:
         unzip {DATA}/male/{params.accession_male}.chr{N_CHROMOSOME}.zip -d {DATA}/male/.tmp-{params.accession_male};
         rm {DATA}/male/{params.accession_male}.chr{N_CHROMOSOME}.zip;
         mv {DATA}/male/.tmp-{params.accession_male}/ncbi_dataset/{DATA}/{params.accession_male}/chr{N_CHROMOSOME}.fna {DATA}/male/{params.accession_male}.chr{N_CHROMOSOME}.fna;
-        rm -rf {DATA}/male/.tmp-{params.accession_male}
+        rm -rf {DATA}/male/.tmp-{params.accession_male};
+        echo -e "{GREEN}[Pipeline] Download {params.accession_male} done.{NC}"
         """          
 
 rule download_female:
@@ -55,7 +61,8 @@ rule download_female:
         unzip {DATA}/female/{params.accession_female}.chr{N_CHROMOSOME}.zip -d {DATA}/female/.tmp-{params.accession_female};
         rm {DATA}/female/{params.accession_female}.chr{N_CHROMOSOME}.zip;
         mv {DATA}/female/.tmp-{params.accession_female}/ncbi_dataset/{DATA}/{params.accession_female}/chr{N_CHROMOSOME}.fna {DATA}/female/{params.accession_female}.chr{N_CHROMOSOME}.fna;
-        rm -rf {DATA}/female/.tmp-{params.accession_female}
+        rm -rf {DATA}/female/.tmp-{params.accession_female};
+        echo -e "{GREEN}[Pipeline] Download {params.accession_female} done.{NC}"
         """  
 
 rule build_male_pangenome:
@@ -65,7 +72,8 @@ rule build_male_pangenome:
         expand("{data}/male/{accession_male}.chr{chromosome}.fna", accession_male=ACCESSIONS_MALE, chromosome=N_CHROMOSOME, data=DATA)
     shell:
         """
-        minigraph -cxggs -t{MINIGRAPH_THREADS} {ALL_MALE_FASTA_AS_SINGLE_STRING} > {output}
+        minigraph -cxggs -t{MINIGRAPH_THREADS} {ALL_MALE_FASTA_AS_SINGLE_STRING} > {output};
+        echo -e "{GREEN}[Pipeline] Build male_chr{N_CHROMOSOME}_pangenome.grf done.{NC}"
         """
 
 rule build_female_pangenome:
@@ -75,7 +83,8 @@ rule build_female_pangenome:
         expand("{data}/female/{accession_female}.chr{chromosome}.fna", accession_female=ACCESSIONS_FEMALE, chromosome=N_CHROMOSOME, data=DATA)
     shell:
         """
-        minigraph -cxggs -t{MINIGRAPH_THREADS} {ALL_FEMALE_FASTA_AS_SINGLE_STRING} > {output}
+        minigraph -cxggs -t{MINIGRAPH_THREADS} {ALL_FEMALE_FASTA_AS_SINGLE_STRING} > {output};
+        echo -e "{GREEN}[Pipeline] Build female_chr{N_CHROMOSOME}_pangenome.grf done.{NC}"
         """
 
 rule call_bubbles_male:
@@ -114,3 +123,18 @@ rule path_male_sample:
             {input.fasta} \
           > {output}
         """
+
+# execute the demo logic
+DEMO_SUBSET_INT = 3
+rule demo:
+    input:
+        expand("{data}/male/{accession_male}.chr{chromosome}.fna", 
+            accession_male = ACCESSIONS_MALE[:DEMO_SUBSET_INT], 
+            chromosome = N_CHROMOSOME, 
+            data = DATA),
+        expand("{data}/female/{accession_female}.chr{chromosome}.fna", 
+            accession_female = ACCESSIONS_FEMALE[:DEMO_SUBSET_INT], 
+            chromosome = N_CHROMOSOME, 
+            data = DATA),
+        f"{RESULTS}/pangenomes/homo_sapiens_male_chr{N_CHROMOSOME}_pangenome.grf", 
+        f"{RESULTS}/pangenomes/homo_sapiens_female_chr{N_CHROMOSOME}_pangenome.grf"
