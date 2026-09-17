@@ -1,7 +1,7 @@
 # *quick note*
 # - download all fasta from ncbi (male & female)
 # - graph generation from fastas (male & female)
-# - generates bed files
+# - generates bed-like files
 
 configfile: "configs/data.yaml"
 

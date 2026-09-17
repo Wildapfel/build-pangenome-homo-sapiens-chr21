@@ -1,15 +1,21 @@
 # Pangenome-Graphs *homo sapiens* chr21
 
-- I build a reproduceable workflow for downloading chr 21 of *homo sapiens* (males and females)
-- I build pangenome graphs onto each subset (male and female)
-- I inspected each pangenome graph using `Badange`
-- I found hightly strutural variants region through out the genomes but also hightly conserved (long-reaching) regions
+## Introduction
+- U build an reproducible pangenome-build pipeline using Docker and Snakemake, including illustrations of interesting regions (male, female) found via Bandage in chromosome 21 of 10 chromosomes 
+- Regions were inspected using `Badange`
+- I found highly structural variant regions but also highly conserved (long) regions
+
+## asd
 - Directly jump to some interesting variant/conserved regions (screenshoted from Bandage):
     - [regions](results/genomic_regions.md)
 
-## data
-
+## Data
 - b-lymphocytes WGS (male and female)
+
+## Pipeline
+1. Downloading chr 21 of *homo sapiens* (males and females)
+2. Build pangenome graphs onto each subset 
+
 
 ## instructions
 
