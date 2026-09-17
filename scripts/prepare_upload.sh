@@ -1,5 +1,5 @@
 DEST="/var/home/max-inspiron/GitHub/Wildapfel/portfolio/projects/pangenome/homo-sapiens-chr21/"
-SRC="."
+SRC=".."
 
 rsync -av \
     $DEST \

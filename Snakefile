@@ -5,14 +5,20 @@
 
 configfile: "configs/data.yaml"
 
-DATA = config["outdir"]["data"]
-RESULTS = config["outdir"]["results"]
-MINIGRAPH_THREADS = config["minigraph-threads"]
-N_CHROMOSOME = config["n_chromosome"]
-ACCESSIONS_MALE = config["accessions"]["male"]
-ACCESSIONS_FEMALE = config["accessions"]["female"]
-ALL_MALE_FASTA_AS_SINGLE_STRING = " ".join([f"data/male/{acc}.chr21.fna" for acc in ACCESSIONS_MALE])
-ALL_FEMALE_FASTA_AS_SINGLE_STRING = " ".join([f"data/female/{acc}.chr21.fna" for acc in ACCESSIONS_FEMALE])
+DATA                                    = config["outdir"]["data"]
+RESULTS                                 = config["outdir"]["results"]
+MINIGRAPH_THREADS                       = config["minigraph-threads"]
+N_CHROMOSOME                            = config["n_chromosome"]
+
+DEMO_FLAG                               = config["demo"]
+SUBSET_FLAG                             = 3 if DEMO_FLAG else 10 # hard coded !
+
+ACCESSIONS_MALE                         = config["accessions"]["male"][:SUBSET_FLAG]
+ACCESSIONS_FEMALE                       = config["accessions"]["female"][:SUBSET_FLAG]
+ALL_MALE_FASTA_AS_SINGLE_STRING         = " ".join([f"data/male/{acc}.chr21.fna" for acc in ACCESSIONS_MALE])
+ALL_FEMALE_FASTA_AS_SINGLE_STRING       = " ".join([f"data/female/{acc}.chr21.fna" for acc in ACCESSIONS_FEMALE])
+
+HARD_CODED_FASTA_FOR_SINGLE_PATH_CALL   = f"{DATA}/male/GCA_056717095.1.chr21.fna" # first accession
 
 # some colors 
 RED='\033[0;31m'
@@ -94,7 +100,8 @@ rule call_bubbles_male:
         f"{RESULTS}/pangenomes/homo_sapiens_male_chr21_pangenome.grf"
     shell:
         """
-        gfatools bubble {input} > {output}
+        gfatools bubble {input} > {output};
+        echo -e "{GREEN}[Pipeline] Call bubbles male_chr{N_CHROMOSOME}_pangenome.grf done.{NC}"
         """
 
 rule call_bubbles_female:
@@ -104,7 +111,8 @@ rule call_bubbles_female:
         f"{RESULTS}/pangenomes/homo_sapiens_female_chr21_pangenome.grf"
     shell:
         """
-        gfatools bubble {input} > {output}
+        gfatools bubble {input} > {output};
+        echo -e "{GREEN}[Pipeline] Call bubbles female_chr{N_CHROMOSOME}_pangenome.grf done.{NC}"
         """
 
 rule path_male_sample:
@@ -112,7 +120,7 @@ rule path_male_sample:
         f"{RESULTS}/paths/GCA_056717095.1.bed"
     input:
         graph = f"{RESULTS}/pangenomes/homo_sapiens_male_chr{N_CHROMOSOME}_pangenome.grf",
-        fasta = f"{DATA}/male/GCA_056667625.1.chr21.fna"
+        fasta = f"{HARD_CODED_FASTA_FOR_SINGLE_PATH_CALL}"
     shell:
         """
         minigraph \
@@ -121,20 +129,6 @@ rule path_male_sample:
             -t{MINIGRAPH_THREADS} \
             {input.graph} \
             {input.fasta} \
-          > {output}
+          > {output};
+        echo -e "{GREEN}[Pipeline] Build path male_chr{N_CHROMOSOME}_pangenome.grf done.{NC}"
         """
-
-# execute the demo logic
-DEMO_SUBSET_INT = 3
-rule demo:
-    input:
-        expand("{data}/male/{accession_male}.chr{chromosome}.fna", 
-            accession_male = ACCESSIONS_MALE[:DEMO_SUBSET_INT], 
-            chromosome = N_CHROMOSOME, 
-            data = DATA),
-        expand("{data}/female/{accession_female}.chr{chromosome}.fna", 
-            accession_female = ACCESSIONS_FEMALE[:DEMO_SUBSET_INT], 
-            chromosome = N_CHROMOSOME, 
-            data = DATA),
-        f"{RESULTS}/pangenomes/homo_sapiens_male_chr{N_CHROMOSOME}_pangenome.grf", 
-        f"{RESULTS}/pangenomes/homo_sapiens_female_chr{N_CHROMOSOME}_pangenome.grf"

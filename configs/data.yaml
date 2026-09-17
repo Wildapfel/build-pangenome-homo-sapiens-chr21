@@ -30,3 +30,5 @@ accessions:
     - "GCA_056696475.1"
     - "GCA_056716895.1"
     - "GCA_056716695.1"
+demo:
+    false
