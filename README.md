@@ -1,7 +1,7 @@
 # Pangenome-Graphs *homo sapiens* chr21
 
 ## Introduction
-- An project-centric reproducible pangenome-build pipeline using Docker and Snakemake, including illustrations of interesting regions (male, female) found via Bandage in chromosome 21 of 10 chromosomes each sex
+- An project-centric reproducible pangenome-build pipeline using Docker and Snakemake, including illustrations of interesting regions (male, female) found via Bandage in chromosome 21 of 10 chromosomes in each sex
 - I found highly structural variant regions but also long conserved regions
 - I will not interpret the Biology, its only for demonstrational purposes, but I want to remark, that some structural variants looking interesting, and highlights the need of pangenome references
 
