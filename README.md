@@ -2,26 +2,33 @@
 
 ## Introduction
 - An reproducible pangenome-build pipeline using Docker and Snakemake, including illustrations of interesting regions (male, female) found via Bandage in chromosome 21 of 10 chromosomes each
-- Regions were inspected using `Badange`
 - I found highly structural variant regions but also long conserved regions
+- I will not interpret the Biology, its only for demonstrational purposes, but I want to remark, that some structural variants looking interesting, and highlights the need of pangenome references
+
+###### *Quick Note*
+- Bandage outputs different topologies every time, hence the graphs can vary when being reproduced !
+- 900Mb of DNA alphabet !
+- Graph build is also computational expensive !
 
 ## Data
-- B-Lymphocyte WGS (male and female)
+- *Homo sapiens* Chromosome 21 of B-Lymphocyte WGS (male and female)
 - The exact IDs can be found in `configs/data.yml`
 
 ## Illustrations of Structural Variants in Chromosome 21
-| Potassium | Magnesium | 
+| Female Regions | Male regions | 
 |:---:|:---:|
-| ![Potassium](results/bandage/female/bubbles_01.png) | ![Potassium](results/bandage/female/bubbles_01.png) |
-| ![Potassium](results/bandage/female/bubbles_02.png) | ![Potassium](results/bandage/female/bubbles_02.png) |
-| ![Potassium](results/bandage/female/bubbles_03.png) | ![Potassium](results/bandage/female/bubbles_03.png) |
-| ![Potassium](results/bandage/female/conserved_region_01.png) | ![Potassium](results/bandage/female/conserved_region_01.png) |
+| ![](results/bandage/female/bubbles_01.png) | ![](results/bandage/male/bubble_01.png) |
+| ![](results/bandage/female/bubbles_02.png) | ![](results/bandage/male/bubble_02.png) |
+| ![Potassium](results/bandage/female/bubbles_03.png) | ![Potassium](results/bandage/male/conserved_region_3mb.png) |
+| ![Potassium](results/bandage/female/conserved_region_01.png) | ![Potassium](results/bandage/male/conserved_region_s287.png) |
+|  | ![Potassium](results/bandage/male/conserved_region_s497.png) |
 
-*Fig. 1 illustrates the Bandage visualization of 4 regions of female (left) and 4 regions of male samples (right). The first three rows show uncerserved regions throughout the pangenomes, whereas the last row shows a highly conserved region.*
+*Fig. 1 illustrates the Bandage visualization of 4 regions of female (left) and 5 regions of male samples (right).*
 
 ## Pipeline
 1. Downloading chr 21 of *homo sapiens* (males and females)
 2. Build pangenome graphs onto each subset 
+3. Further manual inspection of structural variants via Bandage
 
 ## Run Demo
 - Just copies the relevant files into `__demo__` and saves the pipeline output there (mirroring my execution)
@@ -29,61 +36,12 @@
 ```
 ./run_demo.sh
 ```
-- Open `Bandage` and load a sample
+- If you want to inspect the graphs open `Bandage` and load a sample
 - `file > load graph (.grf) > select male/female .grf > draw graph > node labels:name`
-
-## instructions
-
-- build docker-image first
-
-```bash
-podman build --format docker -t pangenome-workflow .
-```
-
-- work inside the docker-image
-
-```bash
-./docker-container.sh
-```
-
-- prepare env and wd
-
-```bash
-micromamba activate bioinfo-pangenome
-cd mnt
-```
-
-- run snakemake (set number of parellel process for yourself)
-
-```bash
-snakemake --cores <N>
-```
-
-## bandage
-
-
-
-## run a demo
-
-- inside the `__demo__` dir
-- download: circa 900mb
-- building the graphs takes time ... 
-- set a number of cores !!!
-
-```
-cp Snakefile __demo__
-cp -r configs __demo__/configs
-cd __demo__
-```
-```
-snakemake --cores <N>
-```
-
 
 *quick note*
 
-- I set a number for multithreading in the minigraph build ...
-- Bandage produces different looking grpahs
+- I set a hard coded number for multithreading in the minigraph build ...
 - `minigraph` also exports bed-like files which can be applied in downstream analysis
 - `minigraph --call` outputs a reference to sample validation and takes sometime to compute,
   thats why only included a demo for a single sample

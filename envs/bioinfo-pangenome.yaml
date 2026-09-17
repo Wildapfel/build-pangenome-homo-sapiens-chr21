@@ -8,4 +8,4 @@ dependencies:
   - minigraph=0.21
   - gfatools=0.5.5
   - ncbi-datasets-cli=18.33.1
-  - gfatools=0.4
+  # - gfatools=0.4
